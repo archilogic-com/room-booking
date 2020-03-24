@@ -189,7 +189,8 @@ export const endSaveBooking = (newBookingsList: Booking[]) => {
 
 export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispatch: any) => {
     dispatch(startSaveBooking());
-    let newBookingsList = bookings;
+    let newBookingsList = bookings.filter(booking => booking.spaceId !== newBooking.spaceId);
+
     newBookingsList.push(newBooking);
 
     axios.put(`/v1/space/${newBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
@@ -199,7 +200,7 @@ export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispat
 
 export const updateBooking = (newBooking: Booking, bookings: Booking[]) => (dispatch: any) => {
     dispatch(startSaveBooking());
-    let newBookingsList = bookings.filter(booking => booking.key !== newBooking.key);
+    let newBookingsList = bookings.filter(booking => booking.spaceId !== newBooking.spaceId);
     newBookingsList.push(newBooking);
 
     axios.put(`/v1/space/${newBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
@@ -209,7 +210,7 @@ export const updateBooking = (newBooking: Booking, bookings: Booking[]) => (disp
 
 export const deleteBooking = (removeBooking: Booking, bookings: Booking[]) => (dispatch: any) => {
     dispatch(startSaveBooking());
-    let newBookingsList = bookings.filter(booking => booking.key !== removeBooking.key);
+    let newBookingsList = bookings.filter(booking => booking.spaceId !== removeBooking.spaceId);
 
     axios.put(`/v1/space/${removeBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
         dispatch(endSaveBooking(newBookingsList));

@@ -9,10 +9,10 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 [Axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js.  
 [Ant Design](https://ant.design/) - A UI Design language and React UI library.  
 [Typescript](https://www.typescriptlang.org/) - Optional static type-checking along with the latest ECMAScript features.  
-[lodash](https://lodash.com/) - A JavaScript utility library delivering consistency, modularity, performance, & extras.
-[Moment.js](https://momentjs.com/) - Parse, validate, manipulate, and display dates and times in JavaScript.
+[lodash](https://lodash.com/) - A JavaScript utility library delivering consistency, modularity, performance, & extras.  
+[Moment.js](https://momentjs.com/) - Parse, validate, manipulate, and display dates and times in JavaScript.  
 [uuidjs](https://github.com/uuidjs/uuid#readme) - 
-Generate RFC-compliant UUIDs in JavaScript.
+Generate RFC-compliant UUIDs in JavaScript.  
 
 ## Install and Run
 
@@ -23,7 +23,7 @@ In the project directory, you can run:
 Installs all the dependencies needed for the project to run locally.
 
 To run the app we'll need to set some environment variables first.  
-We'll need a publishable API key for the [Floor Plan Engine SDK](https://developers.archilogic.com/floor-plan-engine/guide.html) and a secret API key for the [Space API](https://developers.archilogic.com/space-api/v1/introduction.html).  
+You'll need a publishable API key for the [Floor Plan Engine SDK](https://developers.archilogic.com/floor-plan-engine/guide.html) and a secret API key for the [Space API](https://developers.archilogic.com/space-api/v1/introduction.html).  
 Once you have these keys, please create a .env file  (you can copy it from .env.example) and fill in the values for 
 
 	cp .env.example .env
@@ -38,9 +38,8 @@ Start Backend and Frontend with:
 	npm start
 	
 
-Runs the app in the development mode.  
-An express app that proxies Archilogic's Space API will run on [http://localhost:3000](http://localhost:3000).  
-Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
+That command starts an express app that proxies Archilogic's Space API will run on [http://localhost:3000](http://localhost:3000),
+and a frontend app at [http://localhost:3001](http://localhost:3001)
 
 The project loads a default scene. You can set a different scene by adding `?scene=THIS_IS_ANOTHER_SCENE_ID`.  
 
@@ -49,7 +48,7 @@ http://localhost:3001/?scene=0246512e-973c-4e52-a1f2-5f0008e9ee9c
 ```
 
 ### The App
-Simple prototype of a room booking app to manage room booking on behalf of community members.
+A Simple prototype of a room booking app to manage room booking on behalf of community members.
 
 ![](demo.gif)
 

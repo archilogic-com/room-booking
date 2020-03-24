@@ -1,4 +1,4 @@
-# Room Booking App Example using Archilogic Floor-Plan
+# Archilogic Room Booking App Example
 
 This is a Simple prototype of a room booking app to manage room booking on behalf of community members.
 

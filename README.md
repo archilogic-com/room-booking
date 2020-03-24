@@ -1,6 +1,6 @@
 # Archilogic Room Booking App Example
 
-This is a Simple prototype of a room booking app to manage room booking on behalf of community members.
+This is a simple prototype of a room booking app for managing room booking in a given space.
 
 ## Install and Run
 

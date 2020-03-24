@@ -105,6 +105,7 @@ export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispat
 [Ant Design](https://ant.design/) - A UI Design language and React UI library.  
 [Typescript](https://www.typescriptlang.org/) - Optional static type-checking along with the latest ECMAScript features.  
 [lodash](https://lodash.com/) - A JavaScript utility library delivering consistency, modularity, performance, & extras.  
+[Redux](https://redux.js.org/) - A Predictable State Container for JS Apps.
 [Moment.js](https://momentjs.com/) - Parse, validate, manipulate, and display dates and times in JavaScript.  
 [uuidjs](https://github.com/uuidjs/uuid#readme) - 
 Generate RFC-compliant UUIDs in JavaScript.  

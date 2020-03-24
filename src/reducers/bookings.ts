@@ -67,7 +67,7 @@ const bookings = (state = initialState, action: Action) => {
 
             return {
                 ...state,
-                selectDate: action.newDate,
+                selectedDate: action.newDate,
                 selectedSpace: null,
                 usedSpaces: aggregateUsedSpaces(state.bookings, action.newDate, state.selectedTimeSlot, state.spaces)
 

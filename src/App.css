@@ -1,0 +1,26 @@
+body,
+#root,
+.App,
+.ant-layout {
+    height: 100%;
+}
+
+.header {
+    background-color: rgb(40, 44, 52);
+}
+
+.content {
+    height: 100%;
+}
+
+.logo {
+    height: 31px;
+    float: left;
+    color: #fff;
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+.ant-slider-rail {
+    background-color: rgb(187, 188, 207)!important;
+}

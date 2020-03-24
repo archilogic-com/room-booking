@@ -78,7 +78,6 @@ useEffect(() => {
         props.setSpaces(fp.state.computed.spaces)
         onSpacesLoaded(fp.state.computed.spaces)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [props.sceneId]);
 ```
 

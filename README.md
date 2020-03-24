@@ -1,6 +1,6 @@
 # Room Booking App Example using Archilogic Floor-Plan
 
-This is a Simple prototype of a room booking app to manage room booking on behalf of community members.
+This is a Simple prototype of a room booking app to manage room booking on behalf of community members. [DEMO App](https://archilogic-room-booking.herokuapp.com)
 
 ## Install and Run
 

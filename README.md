@@ -36,7 +36,7 @@ http://localhost:3001/?scene=0246512e-973c-4e52-a1f2-5f0008e9ee9c
 ```
 
 ## The App
-You can see a demo gif of the application running or try the [DEMO App](https://archilogic-room-booking.herokuapp.com)
+Check out the screencap below or try the [Demo App](https://archilogic-room-booking.herokuapp.com)
 
 ![](demo.gif)
 
@@ -46,7 +46,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ### Archilogic library setup
 
-check file `public\index.html`:
+Index file `public\index.html`:
 
 ```html
 <!DOCTYPE html>
@@ -68,7 +68,7 @@ check file `public\index.html`:
 
 ### Floorplan Initialization
 
-In file `src\components\Floorplan\FloorPlan.tsx` when the sceneId value is available trough props, we initialize the floor-plan attaching it to the DOM element `#floorplan`
+In file `src\components\Floorplan\FloorPlan.tsx` when the sceneId value is available trough props, we initialize the floor-plan and attach it to the DOM element `#floorplan`
 
 ```javascript
 useEffect(() => {
@@ -83,7 +83,7 @@ useEffect(() => {
 
 ### API storage
 
-All the bookings are managed in a collection in the client side, and when there is any change to that collection, we push the new updated data to the corresponding space.
+All the bookings are managed in a collection on the client side, and when there is any change to that collection, we push the new updated data to the corresponding space.
 
 In order to keep business logic clean we decoupled it into a reducer: `src\reducers\bookings.ts`
 

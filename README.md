@@ -2,6 +2,8 @@
 
 This is a simple prototype of a room booking app for managing room booking in a given space.
 
+Check out a [Demo](https://archilogic-room-booking.herokuapp.com)
+
 ## Install and Run
 
 In the project directory, you can run:
@@ -36,7 +38,6 @@ http://localhost:3001/?scene=0246512e-973c-4e52-a1f2-5f0008e9ee9c
 ```
 
 ## The App
-Check out the screencap below or try the [Demo App](https://archilogic-room-booking.herokuapp.com)
 
 ![](demo.gif)
 

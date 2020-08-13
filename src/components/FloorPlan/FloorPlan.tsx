@@ -53,30 +53,20 @@ const FloorPlan = (props: PropsFromRedux) => {
         const container = document.getElementById('floorplan')
         const fp = new FloorPlanEngine(container, floorPlanStartupSettings)
         fp.loadScene(props.sceneId).then(() => {
-            props.setSpaces(fp.state.computed.spaces)
-            onSpacesLoaded(fp.state.computed.spaces)
+            props.setSpaces(fp.resources.spaces)
+            onSpacesLoaded(fp.resources.spaces)
+
+            fp.on('click', (event: any) => onRoomClick(event, fp));
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.sceneId]);
-
-    // when spaces are available
-    useEffect(() => {
-        props.spaces.forEach((space: Space) => {
-            document.getElementById(`el-${space.id}`)?.addEventListener("click", (e: any) => {
-                const spaceId = getIdFromEvent(e);
-                const space = findSpaceById(spaceId);
-                props.selectSpace(space!);
-            })
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.spaces]);
 
     // Repaint Spaces
     useEffect(() => {
         props.spaces.forEach((space: Space) => {
             fillSpaceWithColor(space, undefined)
         });
-        props.spaces.filter(space => space.usage === "Meet").forEach(space => {
+        props.spaces.filter(space => space.usage === "meet").forEach(space => {
             if (props.usedSpaces.includes(space)) {
                 fillSpaceWithColor(space, colorMap.red);
             } else {
@@ -89,6 +79,12 @@ const FloorPlan = (props: PropsFromRedux) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.usedSpaces, props.selectedSpace])
 
+    const onRoomClick = (event: any, floorPlan: any) => {
+        const { spaces } = floorPlan.getResourcesFromPosition(event.pos);
+        if (spaces.length === 0 || spaces[0].usage !== "meet") return;
+        props.selectSpace(spaces[0]);
+    }
+    
 
     const onSpacesLoaded = (spaces: Space[]) => {
         props.fetchBookingFromSpaces(props.sceneId, spaces)

@@ -81,7 +81,9 @@ const FloorPlan = (props: PropsFromRedux) => {
 
     const onRoomClick = (event: any, floorPlan: any) => {
         const { spaces } = floorPlan.getResourcesFromPosition(event.pos);
+
         if (spaces.length === 0 || spaces[0].usage !== "meet") return;
+
         props.selectSpace(spaces[0]);
     }
     

@@ -104,12 +104,6 @@ const FloorPlan = (props: PropsFromRedux) => {
         });
     }
 
-    const findSpaceById = (id: string) => props.spaces.find(space => space.id === id);
-
-    const getIdFromEvent = (e: any) => {
-        return e.currentTarget.id.replace('el-', '')
-    }
-
     return (<div id="floorplan" style={{ height: '100%', width: '100%' }}></div>)
 
 }

@@ -61,7 +61,7 @@ Index file `public\index.html`:
     <meta name="description" content="Book rooms using Archilogic Floor Plan Engine" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
-    <script src="https://code.archilogic.com/fpe-preview/v2.0.0-rc-4/fpe.js?key=%REACT_APP_ARCHILOGIC_PUBLISHABLE_API_KEY%"></script>
+    <script src="https://code.archilogic.com/fpe-preview/v2.0.0/fpe.js?key=%REACT_APP_ARCHILOGIC_PUBLISHABLE_API_KEY%"></script>
 
 ```
 

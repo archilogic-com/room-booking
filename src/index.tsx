@@ -6,7 +6,15 @@ import { Provider } from 'react-redux'
 import {store} from 'config/store'
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
-axios.defaults.baseURL= process.env.REACT_APP_API_BASE_URL || "http://localhost:3000"
+axios.defaults.baseURL= process.env.REACT_APP_API_BASE_URL
+axios.interceptors.request.use((config) => {
+    config.params = config.params || {};
+    config.params['token'] = process.env.REACT_APP_ARCHILOGIC_PUBLISHABLE_API_KEY;
+
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
 
 ReactDOM.render(
     <Provider store={store}>

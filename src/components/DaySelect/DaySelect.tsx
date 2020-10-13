@@ -21,10 +21,10 @@ const DaySelect = (props: PropsFromRedux) => {
     return (
         <Row justify="center" gutter={[10,10]}>
             <Col >
-                <Button onClick={() => setDate(moment())} >Today</Button>
+                <Button data-cy='today' onClick={() => setDate(moment())} >Today</Button>
             </Col>
             <Col >
-                <Button onClick={() => setDate(moment().add(1, "days"))}  >Tomorow</Button>
+                <Button data-cy='tomorrow' onClick={() => setDate(moment().add(1, "days"))}  >Tomorow</Button>
             </Col>
             <Col >
                 <DatePicker onChange={value => setDate(value)} value={date} format={DATE_FORMAT} />

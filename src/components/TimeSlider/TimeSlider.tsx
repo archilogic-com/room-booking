@@ -28,7 +28,7 @@ const TimeSlider = (props: PropsFromRedux) => {
                     min={0}
                     max={21}
                     step={1}
-                    tipFormatter={formatter}
+                   // tipFormatter={formatter}
                     included={false}
                     onChange={handleTimeChange}
                     value={timeSlot}

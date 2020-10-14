@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+name: Cypress
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  cypress:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-16.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - uses: cypress-io/github-action@v2
+        with: 
+          browser: chrome
+          headless: true
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+        env:
+          REACT_APP_ACCESS_TOKEN: ${{ secrets.REACT_APP_ACCESS_TOKEN }}
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+          REACT_APP_MAPBOX_KEY: ${{ secrets.REACT_APP_MAPBOX_KEY }}

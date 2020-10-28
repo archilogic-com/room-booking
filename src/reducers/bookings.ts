@@ -112,6 +112,9 @@ export const fetchBookingFromSpaces = (floorId: string, spaces: Space[]) => (dis
     return axios.get(`/v1/space?floorId=${floorId}`).then(response => {
         const bookings = response.data.features.flatMap((feature: any) => {
             if (feature.properties.customFields && feature.properties.customFields.bookings) {
+                console.log(feature.properties.customFields.bookings);
+                
+
                 return feature.properties.customFields.bookings.bookings.map((booking: Booking) => {
                     booking['spaceId'] = feature.id;
                     booking['date'] = moment(booking.date);

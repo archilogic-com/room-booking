@@ -47,6 +47,8 @@ interface FloorPlanProps {
 type PropsFromRedux = FloorPlanProps & ConnectedProps<typeof connector>
 
 const FloorPlan = (props: PropsFromRedux) => {
+    console.log('click');
+    
 
     // when sceneId is ready
     useEffect(() => {
@@ -66,7 +68,9 @@ const FloorPlan = (props: PropsFromRedux) => {
         props.spaces.forEach((space: Space) => {
             fillSpaceWithColor(space, undefined)
         });
-        props.spaces.filter(space => space.usage === "meet").forEach(space => {
+        
+        
+        props.spaces.filter(space => space.usage === "meet" || space.usage === "meetingRoom").forEach(space => {
             if (props.usedSpaces.includes(space)) {
                 fillSpaceWithColor(space, colorMap.red);
             } else {
@@ -80,9 +84,10 @@ const FloorPlan = (props: PropsFromRedux) => {
     }, [props.usedSpaces, props.selectedSpace])
 
     const onRoomClick = (event: any, floorPlan: any) => {
+        console.log(        'hago el click');
         const { spaces } = floorPlan.getResourcesFromPosition(event.pos);
 
-        if (spaces.length === 0 || spaces[0].usage !== "meet") return;
+        if (spaces.length === 0) return;
 
         props.selectSpace(spaces[0]);
     }

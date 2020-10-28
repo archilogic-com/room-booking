@@ -45,6 +45,8 @@ const App = (props: PropsFromRedux) => {
   }, [sceneId])
 
   useEffect(() => {
+    console.log('flag 1');
+    
     if (!props.selectedSpace)  return;
     setIsBookRoomModalVisible(true);
   }, [props.selectedSpace])

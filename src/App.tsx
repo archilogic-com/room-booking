@@ -92,7 +92,8 @@ export interface RootState {
   floor: FloorState
 }
 
-const mapState = (state: RootState) => ({
+const mapState = (state: RootState) => (
+  {
   bookings: state.bookings,
   selectedSpace: state.bookings.selectedSpace,
   floorName: state.floor.name,

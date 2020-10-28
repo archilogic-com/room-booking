@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Slider, Col, Row } from 'antd';
-import moment from 'moment';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from 'App';
 import { selectTimeSlot } from 'reducers/bookings';
+import moment from 'moment';
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 const TimeSlider = (props: PropsFromRedux) => {
 
     const [timeSlot, setTimeSlot] = useState(props.selectedTimeSlot)
-    const formatter = (value: number) => {
+    const formatter:any = (value: number) => {
         return moment('800', 'Hmm').add(value * 30, 'minutes').format('hh:mm a');
     }
     const handleTimeChange = (value: any) => {
@@ -28,10 +28,10 @@ const TimeSlider = (props: PropsFromRedux) => {
                     min={0}
                     max={21}
                     step={1}
-                    tipFormatter={formatter}
                     included={false}
                     onChange={handleTimeChange}
                     value={timeSlot}
+                    tipFormatter={formatter}
                 />
             </Col>
             <Col span={2}><span>6:30 p.m.</span></Col>

@@ -73,7 +73,7 @@ const bookings = (state = initialState, action: Action) => {
 
             }
         case SELECT_SPACE:
-            if (action.space.usage !== "meet") return state
+            if (action.space.usage !== "meet" && action.space.usage !== "meetingRoom") return state
             return {
                 ...state,
                 selectedSpace: action.space,
@@ -112,6 +112,9 @@ export const fetchBookingFromSpaces = (floorId: string, spaces: Space[]) => (dis
     return axios.get(`/v1/space?floorId=${floorId}`).then(response => {
         const bookings = response.data.features.flatMap((feature: any) => {
             if (feature.properties.customFields && feature.properties.customFields.bookings) {
+                console.log(feature.properties.customFields.bookings);
+                
+
                 return feature.properties.customFields.bookings.bookings.map((booking: Booking) => {
                     booking['spaceId'] = feature.id;
                     booking['date'] = moment(booking.date);

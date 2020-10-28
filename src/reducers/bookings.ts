@@ -73,7 +73,7 @@ const bookings = (state = initialState, action: Action) => {
 
             }
         case SELECT_SPACE:
-            if (action.space.usage !== "meet") return state
+            if (action.space.usage !== "meet" && action.space.usage !== "meetingRoom") return state
             return {
                 ...state,
                 selectedSpace: action.space,

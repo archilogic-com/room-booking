@@ -45,8 +45,6 @@ const App = (props: PropsFromRedux) => {
   }, [sceneId])
 
   useEffect(() => {
-    console.log('flag 1');
-    
     if (!props.selectedSpace)  return;
     setIsBookRoomModalVisible(true);
   }, [props.selectedSpace])
@@ -94,7 +92,8 @@ export interface RootState {
   floor: FloorState
 }
 
-const mapState = (state: RootState) => ({
+const mapState = (state: RootState) => (
+  {
   bookings: state.bookings,
   selectedSpace: state.bookings.selectedSpace,
   floorName: state.floor.name,

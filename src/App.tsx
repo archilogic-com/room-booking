@@ -33,7 +33,7 @@ const App = (props: PropsFromRedux) => {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const scene = urlParams.get('scene') || urlParams.get('sceneId') ;
+    const scene = urlParams.get('sceneId') ;
     const demoSceneId = scene || '415a1828-3aab-4559-a060-55713a1360c8';
     setSceneId(demoSceneId)
   }, [])

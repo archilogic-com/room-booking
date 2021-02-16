@@ -24,7 +24,7 @@ Once you have these keys, please create a .env file  (you can copy it from .env.
 Update .env variables:
 
 	# REACT_APP_ARCHILOGIC_PUBLISHABLE_API_KEY
-	# REACT_APP_SERVER_ARCHILOGIC_API_BASE_URL
+	# REACT_APP_ARCHILOGIC_API_URL
 
 To run the application execute:
 

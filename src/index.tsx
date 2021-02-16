@@ -7,7 +7,7 @@ import { store } from 'config/store'
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
 import Media from 'react-media';
-axios.defaults.baseURL = process.env.SERVER_ARCHILOGIC_API_BASE_URL
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_ARCHILOGIC_API_BASE_URL
 axios.interceptors.request.use((config) => {
     config.params = config.params || {};
     config.params['token'] = process.env.REACT_APP_ARCHILOGIC_PUBLISHABLE_API_KEY;

@@ -109,7 +109,7 @@ export const initBookings = (bookings: Booking[]) => {
 
 // extract booking data from each space
 export const fetchBookingFromSpaces = (floorId: string, spaces: Space[]) => (dispatch: any) => {
-    return axios.get(`/v1/space?floorId=${floorId}`).then(response => {
+    return axios.get(`/v2/space?floorId=${floorId}`).then(response => {
         const bookings = response.data.features.flatMap((feature: any) => {
             if (feature.properties.customFields && feature.properties.customFields.bookings) {
                 console.log(feature.properties.customFields.bookings);
@@ -196,7 +196,7 @@ export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispat
 
     newBookingsList.push(newBooking);
 
-    axios.put(`/v1/space/${newBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
+    axios.put(`/v2/space/${newBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
         dispatch(endSaveBooking(newBookingsList));
     });
 }
@@ -208,7 +208,7 @@ export const updateBooking = (updatedBooking: Booking, bookings: Booking[]) => (
 
     newBookingsList.push(updatedBooking);
 
-    axios.put(`/v1/space/${updatedBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
+    axios.put(`/v2/space/${updatedBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
         dispatch(endSaveBooking(newBookingsList));
     });
 }
@@ -218,7 +218,7 @@ export const deleteBooking = (removeBooking: Booking, bookings: Booking[]) => (d
     let newBookingsList = bookings.filter(booking => booking.spaceId === removeBooking.spaceId)
         .filter(booking => booking.key !== removeBooking.key);
 
-    axios.put(`/v1/space/${removeBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
+    axios.put(`/v2/space/${removeBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
         dispatch(endSaveBooking(newBookingsList));
     });
 }

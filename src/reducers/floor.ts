@@ -28,7 +28,7 @@ export const receiveFloor = (data: any) => {
 }
 
 export const fetchFloor = (floorId: string) => (dispatch: any) => {
-    return axios.get(`/v1/floor/${floorId}`).then( response => {
+    return axios.get(`/v2/floor/${floorId}`).then( response => {
         dispatch(receiveFloor(response.data))
     }).catch( error=>{
         console.log(error)

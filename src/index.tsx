@@ -8,13 +8,13 @@ import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
 import Media from 'react-media';
 axios.defaults.baseURL = process.env.REACT_APP_ARCHILOGIC_API_URL
-axios.interceptors.request.use((config) => {
-    config.params = config.params || {};
-    config.params['token'] = process.env.REACT_APP_ARCHILOGIC_PUBLISHABLE_API_KEY;
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
+// axios.interceptors.request.use((config) => {
+//     config.params = config.params || {};
+//     config.params['token'] = process.env.REACT_APP_ARCHILOGIC_PUBLISHABLE_API_KEY;
+//     return config;
+// }, (error) => {
+//     return Promise.reject(error);
+// });
 
 ReactDOM.render(
     <Provider store={store}>

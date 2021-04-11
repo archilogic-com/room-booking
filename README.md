@@ -93,7 +93,7 @@ export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispat
     let newBookingsList = bookings;
     newBookingsList.push(newBooking);
 
-    axios.put(`/v1/space/${newBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
+    axios.put(`/v2/space/${newBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
         dispatch(endSaveBooking(newBookingsList));
     });
 }

@@ -109,7 +109,7 @@ export const initBookings = (bookings: Booking[]) => {
 
 // extract booking data from each space
 export const fetchBookingFromSpaces = (floorId: string, spaces: Space[]) => (dispatch: any) => {
-    return axios.get(`/v2/space?floorId=${floorId}`).then(response => {
+    return axios.get(`/v2/space?floorId=${floorId}&includeCustomFields=true`).then(response => {
         const bookings = response.data.features.flatMap((feature: any) => {
             if (feature.properties.customFields && feature.properties.customFields.bookings) {
                 console.log(feature.properties.customFields.bookings);

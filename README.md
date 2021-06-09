@@ -4,7 +4,23 @@ This is a simple prototype of a room booking app for managing room booking in a 
 
 Check out a [Demo](https://archilogic-room-booking.herokuapp.com)
 
-## Install and Run
+## Setup local server 
+
+Navigate to the server folder and run:
+
+    yarn install
+
+The server needs a secret token to negotiate a temporary token.
+
+https://developers.archilogic.com/space-api/v2/introduction.html#secret-access-token
+
+Create a new secret token and add it to the ARCHILOGIC_SECRET_KEY environment variable.
+
+then run:
+
+    node server.js
+
+## Install and Run 
 
 In the project directory, you can run:
 
@@ -23,7 +39,7 @@ Once you have these keys, please create a .env file  (you can copy it from .env.
 	 	
 Update .env variables:
 
-	REACT_APP_ARCHILOGIC_PUBLISHABLE_API_KEY=YOUR_TOKEN
+	REACT_APP_PUBLISHABLE_TOKEN=YOUR_TOKEN
 	REACT_APP_ARCHILOGIC_API_URL=https://api.archilogic.com
 
 To run the application execute:

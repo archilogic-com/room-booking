@@ -50,8 +50,9 @@ const FloorPlan = (props: PropsFromRedux) => {
     // when sceneId is ready
     useEffect(() => {
         const container = document.getElementById('floorplan')
+        const publishableToken = process.env.REACT_APP_PUBLISHABLE_TOKEN
         const fp = new FloorPlanEngine(container, floorPlanStartupSettings)
-        fp.loadScene(props.sceneId).then(() => {
+        fp.loadScene(props.sceneId, { publishableToken }).then(() => {
             props.setSpaces(fp.resources.spaces)
             onSpacesLoaded(fp.resources.spaces)
 

@@ -31,17 +31,17 @@ const TimeLine = (props: PropsFromRedux) => {
       </div>
       <div className="busyTimelineLabel">
         {[
-          '8a.m.',
-          '9a.m.',
-          '10a.m.',
-          '11a.m.',
-          '12a.m.',
-          '1p.m.',
-          '2p.m.',
-          '3p.m.',
-          '4p.m.',
-          '5p.m.',
-          '6p.m.'
+          '8a',
+          '9a',
+          '10a',
+          '11a',
+          '12p',
+          '1p',
+          '2p',
+          '3p',
+          '4p',
+          '5p',
+          '6p'
         ].map((time, index) => (
           <div className="time" key={index}>
             &nbsp;{time}

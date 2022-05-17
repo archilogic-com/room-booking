@@ -20,9 +20,9 @@ const TimeSlider = (props: PropsFromRedux) => {
   }
 
   return (
-    <Row justify="center">
+    <Row justify="center" align="middle">
       <Col span={2}>
-        <span>8 a.m.</span>
+        <span style={{ whiteSpace: 'nowrap' }}>8 am</span>
       </Col>
       <Col span={12}>
         <Slider
@@ -36,7 +36,7 @@ const TimeSlider = (props: PropsFromRedux) => {
         />
       </Col>
       <Col span={2}>
-        <span>6:30 p.m.</span>
+        <span style={{ whiteSpace: 'nowrap' }}>6:30 pm</span>
       </Col>
     </Row>
   )

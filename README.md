@@ -42,11 +42,11 @@ Update .env variables:
 	REACT_APP_PUBLISHABLE_TOKEN=YOUR_TOKEN
 	REACT_APP_ARCHILOGIC_API_URL=https://api.archilogic.com
 
-To run the application execute:
+To run the application, execute:
 
 	npm start
 
-The project loads a default scene but you can change it by a different one by specifing `?sceneId=THIS_IS_ANOTHER_SCENE_ID` in the browser url.  
+The project loads a default scene but you can change it to a different one by specifing `?sceneId=THIS_IS_ANOTHER_SCENE_ID` in the browser url.  
 
 ```html
 http://localhost:3001/?sceneId=0246512e-973c-4e52-a1f2-5f0008e9ee9c

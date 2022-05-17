@@ -1,8 +1,8 @@
 @import '~antd/dist/antd.css';
-body{
-    overflow-x: hidden;
+body {
+  overflow-x: hidden;
 }
-.device-not-supported{
-    width: 100%;
-    height: 100%;
+.device-not-supported {
+  width: 100%;
+  height: 100%;
 }

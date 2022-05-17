@@ -4,7 +4,7 @@ This is a simple prototype of a room booking app for managing room booking in a 
 
 Check out a [Demo](https://archilogic-room-booking.herokuapp.com)
 
-## Setup local server 
+## Setup local server
 
 Navigate to the server folder and run:
 
@@ -20,33 +20,34 @@ then run:
 
     node server.js
 
-## Install and Run 
+## Install and Run
 
 In the project directory, you can run:
 
-	npm install
+    npm install
 
 This command will install all the dependencies needed for the project to run locally.
 
 To run the app we'll need to set some environment variables first.  
-You'll need an API key [https://developers.archilogic.com/api-keys.html](https://developers.archilogic.com/api-keys.html).  
+You'll need an API key [https://developers.archilogic.com/api-keys.html](https://developers.archilogic.com/api-keys.html).
 
 ![](token.png)
 
-Once you have these keys, please create a .env file  (you can copy it from .env.example) and fill in the values for 
+Once you have these keys, please create a .env file (you can copy it from .env.example) and fill in the values for
 
-	cp .env.example .env
-	 	
+    cp .env.example .env
+
+
 Update .env variables:
 
-	REACT_APP_PUBLISHABLE_TOKEN=YOUR_TOKEN
-	REACT_APP_ARCHILOGIC_API_URL=https://api.archilogic.com
+    REACT_APP_PUBLISHABLE_TOKEN=YOUR_TOKEN
+    REACT_APP_ARCHILOGIC_API_URL=https://api.archilogic.com
 
 To run the application, execute:
 
-	npm start
+    npm start
 
-The project loads a default scene but you can change it to a different one by specifing `?sceneId=THIS_IS_ANOTHER_SCENE_ID` in the browser url.  
+The project loads a default scene but you can change it to a different one by specifing `?sceneId=THIS_IS_ANOTHER_SCENE_ID` in the browser url.
 
 ```html
 http://localhost:3001/?sceneId=0246512e-973c-4e52-a1f2-5f0008e9ee9c
@@ -67,20 +68,21 @@ Index file `public\index.html`:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Book rooms using Archilogic Floor Plan Engine" />
+    <meta
+      name="description"
+      content="Book rooms using Archilogic Floor Plan Engine"
+    />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
     <script src="https://code.archilogic.com/fpe-preview/v2.0.x/fpe.js?key=%REACT_APP_ARCHILOGIC_PUBLISHABLE_API_KEY%"></script>
-
+  </head>
+</html>
 ```
-
-
 
 ### Floorplan Initialization
 
@@ -88,12 +90,12 @@ In file `src\components\Floorplan\FloorPlan.tsx` when the sceneId value is avail
 
 ```javascript
 useEffect(() => {
-    const container = document.getElementById('floorplan')
-    const fp = new FloorPlanEngine(container, floorPlanStartupSettings)
-    fp.loadScene(props.sceneId).then(() => {
-        props.setSpaces(fp.state.computed.spaces)
-        onSpacesLoaded(fp.state.computed.spaces)
-    })
+  const container = document.getElementById("floorplan");
+  const fp = new FloorPlanEngine(container, floorPlanStartupSettings);
+  fp.loadScene(props.sceneId).then(() => {
+    props.setSpaces(fp.state.computed.spaces);
+    onSpacesLoaded(fp.state.computed.spaces);
+  });
 }, [props.sceneId]);
 ```
 
@@ -104,15 +106,21 @@ All the bookings are managed in a collection on the client side, and when there 
 In order to keep business logic clean we decoupled it into a reducer: `src\reducers\bookings.ts`
 
 ```javascript
-export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispatch: any) => {
+export const saveBooking =
+  (newBooking: Booking, bookings: Booking[]) => (dispatch: any) => {
     dispatch(startSaveBooking());
     let newBookingsList = bookings;
     newBookingsList.push(newBooking);
 
-    axios.put(`/v2/space/${newBooking.spaceId}/custom-field/properties.customFields.bookings`, { bookings: newBookingsList }).then((response: any) => {
+    axios
+      .put(
+        `/v2/space/${newBooking.spaceId}/custom-field/properties.customFields.bookings`,
+        { bookings: newBookingsList }
+      )
+      .then((response: any) => {
         dispatch(endSaveBooking(newBookingsList));
-    });
-}
+      });
+  };
 ```
 
 ### Other Libraries Used In This Project
@@ -123,5 +131,5 @@ export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispat
 [lodash](https://lodash.com/) - A JavaScript utility library delivering consistency, modularity, performance, & extras.  
 [Redux](https://redux.js.org/) - A Predictable State Container for JS Apps.
 [Moment.js](https://momentjs.com/) - Parse, validate, manipulate, and display dates and times in JavaScript.  
-[uuidjs](https://github.com/uuidjs/uuid#readme) - 
-Generate RFC-compliant UUIDs in JavaScript.  
+[uuidjs](https://github.com/uuidjs/uuid#readme) -
+Generate RFC-compliant UUIDs in JavaScript.

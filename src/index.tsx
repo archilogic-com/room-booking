@@ -6,20 +6,11 @@ import { Provider } from 'react-redux'
 import { store } from 'config/store'
 import * as serviceWorker from './serviceWorker'
 import axios from 'axios'
-import Media from 'react-media'
 axios.defaults.baseURL = process.env.REACT_APP_ARCHILOGIC_API_URL
 
 ReactDOM.render(
   <Provider store={store}>
-    <Media
-      query="(max-width: 500px)"
-      render={() => (
-        <div>
-          <img className="device-not-supported" src={require('./warning.png')} alt="" />
-        </div>
-      )}
-    />
-    <Media query="(min-width: 501px)" render={() => <App />} />
+    <App />
   </Provider>,
   document.getElementById('root')
 )

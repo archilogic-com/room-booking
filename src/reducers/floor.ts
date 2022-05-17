@@ -32,7 +32,7 @@ export const fetchFloor = (floorId: string) => (dispatch: any) => {
       dispatch(receiveFloor(response.data))
     })
     .catch(error => {
-      console.log(error)
+      console.error(error)
     })
 }
 

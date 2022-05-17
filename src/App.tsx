@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import FloorPlan from 'components/FloorPlan/FloorPlan'
 import './App.css'
-import { Row, Col, Layout, Modal } from 'antd'
+import { Modal } from 'antd'
 
 import TimeLine from 'components/TimeSlider/TimeSlider'
 import DaySelect from 'components/DaySelect/DaySelect'
@@ -11,8 +11,6 @@ import axios from 'axios'
 
 import BookForm from 'components/BookForm/BookForm'
 import { FloorState, fetchFloor } from 'reducers/floor'
-
-const { Header, Footer, Content } = Layout
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
@@ -40,7 +38,7 @@ const App = (props: PropsFromRedux) => {
           return config
         },
         error => {
-          console.log(error)
+          console.error(error)
           return Promise.reject(error)
         }
       )
@@ -73,26 +71,13 @@ const App = (props: PropsFromRedux) => {
   }, [isBookRoomModalVisible])
 
   return (
-    <Layout>
-      <Header className="header">
-        <div className="logo">Room Booking App - {props.floorName}</div>
-      </Header>
-      <Content className="content">
-        <Row style={{ marginTop: '40px', marginBottom: '20px' }}>
-          <Col span={7}>
-            <DaySelect />
-          </Col>
-          <Col span={17}>
-            <TimeLine />
-          </Col>
-        </Row>
-        <Row style={{ height: '90%' }}>
-          <Col span={24} style={{ height: '100%' }}>
-            {sceneId && <FloorPlan sceneId={sceneId} />}
-          </Col>
-        </Row>
-      </Content>
-      <Footer></Footer>
+    <div className="app">
+      <div className="header">Room Booking - {props.floorName}</div>
+      <div className="content">
+        <DaySelect />
+        <TimeLine />
+        <div style={{ flex: 1 }}>{sceneId && <FloorPlan sceneId={sceneId} />}</div>
+      </div>
       <Modal
         title="Book Room"
         visible={isBookRoomModalVisible}
@@ -102,7 +87,7 @@ const App = (props: PropsFromRedux) => {
           <BookForm onFinishCallback={() => setIsBookRoomModalVisible(false)} />
         )}
       </Modal>
-    </Layout>
+    </div>
   )
 }
 export interface RootState {

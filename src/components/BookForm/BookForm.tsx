@@ -111,11 +111,9 @@ const BookForm = (props: PropsFromRedux) => {
   return (
     <>
       <Row justify="space-between" align="bottom">
-        <Col span={2}></Col>
-        <Col span={20}>
+        <Col span={24}>
           <TimeLine bookingSlots={bookingSlotsNumber} />
         </Col>
-        <Col span={2}></Col>
       </Row>
       <Row justify="space-between" align="bottom">
         <Col>

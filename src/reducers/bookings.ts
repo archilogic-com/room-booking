@@ -140,8 +140,6 @@ export const fetchBookingFromSpaces = (floorId: string, spaces: Space[]) => (dis
       const bookings = response.data.features
         .flatMap((feature: any) => {
           if (feature.properties.customFields && feature.properties.customFields.bookings) {
-            console.log(feature.properties.customFields.bookings)
-
             return feature.properties.customFields.bookings.bookings.map((booking: Booking) => {
               booking['spaceId'] = feature.id
               booking['date'] = moment(booking.date)
@@ -153,7 +151,7 @@ export const fetchBookingFromSpaces = (floorId: string, spaces: Space[]) => (dis
       dispatch(initBookings(bookings))
     })
     .catch(error => {
-      console.log(error)
+      console.error(error)
     })
 }
 

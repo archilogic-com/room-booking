@@ -2,7 +2,14 @@ import React, { useEffect } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from 'App'
 import { fetchBookingFromItems, selectItem, setItems, setAssetsById } from 'reducers/bookings'
-import { AssetsById, BookableDesk, Item, BookableRoom, Asset, BookableRoomDetails } from 'shared/interfaces'
+import {
+  AssetsById,
+  BookableDesk,
+  Item,
+  BookableRoom,
+  Asset,
+  BookableRoomDetails
+} from 'shared/interfaces'
 
 declare var FloorPlanEngine: any
 
@@ -46,9 +53,10 @@ interface FloorPlanProps {
 
 type PropsFromRedux = FloorPlanProps & ConnectedProps<typeof connector>
 
-
-const isBookableRoom = (maybeBookableRoom: BookableRoom | any): maybeBookableRoom is BookableRoom => {
-  return (maybeBookableRoom.program === 'meet' || maybeBookableRoom.usage === 'focusRoom')
+const isBookableRoom = (
+  maybeBookableRoom: BookableRoom | any
+): maybeBookableRoom is BookableRoom => {
+  return maybeBookableRoom.program === 'meet' || maybeBookableRoom.usage === 'focusRoom'
 }
 
 const isBookableDesk = (maybeBookableAsset: Asset): maybeBookableAsset is BookableDesk => {
@@ -60,16 +68,19 @@ const isSpaceWithBookableDesks = (space: BookableRoom): boolean => {
 }
 
 export const isBookableItem = (maybeItem: Item | any): boolean => {
-  return isBookableRoom(maybeItem) ||  isBookableDesk(maybeItem)
+  return isBookableRoom(maybeItem) || isBookableDesk(maybeItem)
 }
 
-const getBookableRoomDetails = (space: BookableRoom, assetsById: AssetsById): BookableRoomDetails => {
+const getBookableRoomDetails = (
+  space: BookableRoom,
+  assetsById: AssetsById
+): BookableRoomDetails => {
   const details: BookableRoomDetails = {
     tableCount: 0,
     tvCount: 0,
     seatCount: 0,
     whiteboardCount: 0,
-    zoomCallSupported: false,
+    zoomCallSupported: false
   }
 
   for (const assetId of space.assets) {
@@ -95,13 +106,17 @@ const getBookableRoomDetails = (space: BookableRoom, assetsById: AssetsById): Bo
   return details
 }
 
-const getBookableItems = ({ spaces, assetsById }: { spaces: any[], assetsById: AssetsById }) => {
+const getBookableItems = ({ spaces, assetsById }: { spaces: any[]; assetsById: AssetsById }) => {
   const BookableRooms: BookableRoom[] = []
   const bookableDesks: BookableDesk[] = []
 
   for (const space of spaces) {
     if (isBookableRoom(space)) {
-      BookableRooms.push({ ...space, type: 'room', details: getBookableRoomDetails(space, assetsById) })
+      BookableRooms.push({
+        ...space,
+        type: 'room',
+        details: getBookableRoomDetails(space, assetsById)
+      })
     }
     if (isSpaceWithBookableDesks(space)) {
       for (const assetId of space.assets) {
@@ -115,7 +130,6 @@ const getBookableItems = ({ spaces, assetsById }: { spaces: any[], assetsById: A
   return [...BookableRooms, ...bookableDesks]
 }
 
-
 const FloorPlan = (props: PropsFromRedux) => {
   // when sceneId is ready
   useEffect(() => {
@@ -125,11 +139,11 @@ const FloorPlan = (props: PropsFromRedux) => {
     fp.loadScene(props.sceneId, { publishableToken }).then(() => {
       const { spaces = [], assets = [] } = fp.resources
       const assetsById = Object.fromEntries(assets.map((asset: any) => [asset.id, asset]))
-      const items  = getBookableItems({ spaces, assetsById })
-      
+      const items = getBookableItems({ spaces, assetsById })
+
       props.setAssetsById(assetsById)
       props.setItems(items)
-      
+
       onItemsLoaded(items)
 
       fp.on('click', (event: any) => onRoomClick(event, fp, items))
@@ -143,26 +157,24 @@ const FloorPlan = (props: PropsFromRedux) => {
       fillItemWithColor(item, undefined)
     })
 
-
-    props.items
-      .forEach(item => {
-        if (props.usedItems.includes(item)) {
-          fillItemWithColor(item, colorMap.red)
-        } else {
-          fillItemWithColor(item, colorMap.green)
-        }
-        if (props.selectedItem) {
-          fillItemWithColor(props.selectedItem, colorMap.lightBlue)
-        }
-      })
+    props.items.forEach(item => {
+      if (props.usedItems.includes(item)) {
+        fillItemWithColor(item, colorMap.red)
+      } else {
+        fillItemWithColor(item, colorMap.green)
+      }
+      if (props.selectedItem) {
+        fillItemWithColor(props.selectedItem, colorMap.lightBlue)
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.usedItems, props.selectedItem])
 
   const onRoomClick = (event: any, floorPlan: any, items: any[]) => {
-    const{ spaces = [], assets = []} = floorPlan.getResourcesFromPosition(event.pos)
+    const { spaces = [], assets = [] } = floorPlan.getResourcesFromPosition(event.pos)
 
     const selectedAsset = assets[0]
-    const selectedSpace = spaces[0] 
+    const selectedSpace = spaces[0]
 
     const nextSelected = items.find(item => {
       return selectedAsset?.id === item.id || selectedSpace?.id === item.id
@@ -171,7 +183,6 @@ const FloorPlan = (props: PropsFromRedux) => {
     if (nextSelected) {
       props.selectItem(nextSelected)
     }
-
   }
 
   const onItemsLoaded = (items: Item[]) => {

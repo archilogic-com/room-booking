@@ -79,10 +79,11 @@ const App = (props: PropsFromRedux) => {
         <div style={{ flex: 1 }}>{sceneId && <FloorPlan sceneId={sceneId} />}</div>
       </div>
       <Modal
-        title={props.selectedItem?.type === 'desk' ? "Book Desk" : "Book Room"}
+        title={props.selectedItem?.type === 'desk' ? 'Book Desk' : 'Book Room'}
         visible={isBookRoomModalVisible}
         footer={null}
-        onCancel={() => setIsBookRoomModalVisible(false)}>
+        onCancel={() => setIsBookRoomModalVisible(false)}
+      >
         {isBookRoomModalVisible && (
           <BookForm onFinishCallback={() => setIsBookRoomModalVisible(false)} />
         )}

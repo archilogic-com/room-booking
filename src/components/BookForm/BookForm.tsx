@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Row, Col, Button, Form, Radio, Input, Divider, Modal } from 'antd'
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment'
@@ -15,21 +15,21 @@ interface BookFormProps {
 
 type PropsFromRedux = BookFormProps & ConnectedProps<typeof connector>
 
-const RoomDetails = ({ details }: { details: BookableRoomDetails}) => {
+const RoomDetails = ({ details }: { details: BookableRoomDetails }) => {
   const listItems = []
 
   const labels: Record<string, string[]> = {
     seatCount: ['seat', 'seats'],
     tableCount: ['table', 'tables'],
     whiteboardCount: ['whiteboard', 'whiteboards'],
-    tvCount: ['TV', 'TVs'],
+    tvCount: ['TV', 'TVs']
   }
 
   for (const key in labels) {
     const safeKey = key as keyof BookableRoomDetails
     if (details[safeKey] === 1) {
       listItems.push(`1 ${labels[safeKey][0]}`)
-    } 
+    }
     // @ts-ignore
     if (details[safeKey] > 1) {
       listItems.push(`${details[safeKey]} ${labels[key][1]}`)
@@ -40,16 +40,20 @@ const RoomDetails = ({ details }: { details: BookableRoomDetails}) => {
     listItems.push('Zoom call supported')
   }
 
-  return (<>
-    <Row>
-      <h4>Room details</h4>
-    </Row>
-    <Row>
-      <ul style={{listStyleType: 'none', paddingInlineStart: '0.5rem'}}>
-        {listItems.map((str) => <li key={str}>{str}</li>)}
-      </ul>
-    </Row>
-  </>)
+  return (
+    <>
+      <Row>
+        <h4>Room details</h4>
+      </Row>
+      <Row>
+        <ul style={{ listStyleType: 'none', paddingInlineStart: '0.5rem' }}>
+          {listItems.map(str => (
+            <li key={str}>{str}</li>
+          ))}
+        </ul>
+      </Row>
+    </>
+  )
 }
 
 const BookForm = (props: PropsFromRedux) => {
@@ -69,7 +73,8 @@ const BookForm = (props: PropsFromRedux) => {
       <Radio.Button
         key={bookingOpts}
         onClick={() => setBookingSlotsNumber(bookingOpts)}
-        value={bookingOpts}>
+        value={bookingOpts}
+      >
         {bookingOpts * 30} Minutes
       </Radio.Button>
     )
@@ -140,7 +145,7 @@ const BookForm = (props: PropsFromRedux) => {
       email: ''
     }
   }
-  
+
   // select by default the maximum bookable time
   const [bookingSlotsNumber, setBookingSlotsNumber] = useState<number>(
     existingBooking ? existingBooking.duration : maxBookingSize
@@ -148,7 +153,7 @@ const BookForm = (props: PropsFromRedux) => {
 
   return (
     <>
-      {props.selectedItem?.type === 'room' && <RoomDetails details={props.selectedItem.details} />} 
+      {props.selectedItem?.type === 'room' && <RoomDetails details={props.selectedItem.details} />}
       <Row justify="space-between" align="bottom">
         <Col span={24}>
           <TimeLine bookingSlots={bookingSlotsNumber} />
@@ -166,23 +171,27 @@ const BookForm = (props: PropsFromRedux) => {
             wrapperCol={{ span: 14 }}
             layout="horizontal"
             initialValues={formValues as any}
-            onFinish={handleSubmit}>
+            onFinish={handleSubmit}
+          >
             <Form.Item
               label="First Name"
               name="firstName"
-              rules={[{ required: true, message: 'Please input the First Name' }]}>
+              rules={[{ required: true, message: 'Please input the First Name' }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
               label="Last Name"
               name="lastName"
-              rules={[{ required: true, message: 'Please input the Last Name' }]}>
+              rules={[{ required: true, message: 'Please input the Last Name' }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
               label="Email"
               name="email"
-              rules={[{ required: true, message: 'Please input Email Address' }]}>
+              rules={[{ required: true, message: 'Please input Email Address' }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item label="Booking Time" name="duration">

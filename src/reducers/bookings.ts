@@ -11,7 +11,7 @@ import {
   END_SAVE_BOOKING,
   UNSELECT_ITEM
 } from './actions'
-import { Booking, Item, Asset, AssetsById } from 'shared/interfaces'
+import { Booking, Item, AssetsById } from 'shared/interfaces'
 import { isBookableItem } from 'components/FloorPlan/FloorPlan'
 
 export const SLOTS_COUNT = 22 // from 8 am to 7 pm
@@ -59,7 +59,7 @@ const initialState: BookingsState = {
 
 const bookings = (state = initialState, action: Action) => {
   switch (action.type) {
-    case SET_ASSETS_BY_ID: 
+    case SET_ASSETS_BY_ID:
       return {
         ...state,
         assetsById: action.assetsById
@@ -138,7 +138,6 @@ const bookings = (state = initialState, action: Action) => {
   }
 }
 
-
 export const setAssetsById = (assetsById: AssetsById) => {
   return { type: SET_ASSETS_BY_ID, assetsById }
 }
@@ -157,11 +156,9 @@ export const fetchBookingFromItems = (floorId: string, items: Item[]) => (dispat
     axios.get(`/v2/${getEndpoint('desk')}?floorId=${floorId}&includeCustomFields=true`),
     axios.get(`/v2/${getEndpoint('room')}?floorId=${floorId}&includeCustomFields=true`)
   ])
-    .then(([
-      assets,
-      floors
-    ]) => {
-      const bookings = [...assets.data.features, ...floors.data.features].flatMap((feature: any) => {
+    .then(([assets, floors]) => {
+      const bookings = [...assets.data.features, ...floors.data.features]
+        .flatMap((feature: any) => {
           if (feature.properties.customFields && feature.properties.customFields.bookings) {
             return feature.properties.customFields.bookings.bookings.map((booking: Booking) => {
               booking['itemId'] = feature.id
@@ -206,9 +203,7 @@ const aggregateUsedSlots = (
   }
   const bookingsOfDay = bookings.filter(
     (booking: Booking) =>
-      booking.date.isSame(dateSelected, 'day') &&
-      selectedItem &&
-      booking.itemId === selectedItem.id
+      booking.date.isSame(dateSelected, 'day') && selectedItem && booking.itemId === selectedItem.id
   )
   return new Array(SLOTS_COUNT).fill(false).map((slot, index) => {
     const slotTime = dateSelected
@@ -267,6 +262,7 @@ const aggregateUsedItems = (
     )
   })
   const bookingsOfSlotIDs = bookingsOfSlot.map(booking => booking.itemId)
+
   return items.filter(item => bookingsOfSlotIDs.includes(item.id))
 }
 
@@ -280,14 +276,21 @@ export const endSaveBooking = (newBookingsList: Booking[]) => {
 
 export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispatch: any) => {
   dispatch(startSaveBooking())
-  let newBookingsList = bookings.filter(booking => booking.itemId === newBooking.itemId)
 
-  newBookingsList.push(newBooking)
+  const newBookingsList: Booking[] = [...bookings, newBooking]
+  const newBookingsListForItem: Booking[] = newBookingsList.filter(
+    booking => booking.itemId === newBooking.itemId
+  )
 
   axios
-    .put(`/v2/${getEndpoint(newBooking.type)}/${newBooking.itemId}/custom-field/properties.customFields.bookings`, {
-      bookings: newBookingsList
-    })
+    .put(
+      `/v2/${getEndpoint(newBooking.type)}/${
+        newBooking.itemId
+      }/custom-field/properties.customFields.bookings`,
+      {
+        bookings: newBookingsListForItem
+      }
+    )
     .then((response: any) => {
       dispatch(endSaveBooking(newBookingsList))
     })
@@ -295,16 +298,23 @@ export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispat
 
 export const updateBooking = (updatedBooking: Booking, bookings: Booking[]) => (dispatch: any) => {
   dispatch(startSaveBooking())
-  let newBookingsList = bookings
-    .filter(booking => booking.itemId === updatedBooking.itemId)
-    .filter(booking => booking.key !== updatedBooking.key)
 
-  newBookingsList.push(updatedBooking)
+  const newBookingsList: Booking[] = bookings
+    .filter(booking => booking.key !== updatedBooking.key)
+    .concat(updatedBooking)
+  const newBookingsListForItem: Booking[] = newBookingsList.filter(
+    booking => booking.itemId === updatedBooking.itemId
+  )
 
   axios
-    .put(`/v2/${getEndpoint(updatedBooking.type)}/${updatedBooking.itemId}/custom-field/properties.customFields.bookings`, {
-      bookings: newBookingsList
-    })
+    .put(
+      `/v2/${getEndpoint(updatedBooking.type)}/${
+        updatedBooking.itemId
+      }/custom-field/properties.customFields.bookings`,
+      {
+        bookings: newBookingsListForItem
+      }
+    )
     .then((response: any) => {
       dispatch(endSaveBooking(newBookingsList))
     })
@@ -312,14 +322,21 @@ export const updateBooking = (updatedBooking: Booking, bookings: Booking[]) => (
 
 export const deleteBooking = (removeBooking: Booking, bookings: Booking[]) => (dispatch: any) => {
   dispatch(startSaveBooking())
-  let newBookingsList = bookings
-    .filter(booking => booking.itemId === removeBooking.itemId)
-    .filter(booking => booking.key !== removeBooking.key)
+
+  const newBookingsList: Booking[] = bookings.filter(booking => booking.key !== removeBooking.key)
+  const newBookingsListForItem: Booking[] = newBookingsList.filter(
+    booking => booking.itemId === removeBooking.itemId
+  )
 
   axios
-    .put(`/v2/${getEndpoint(removeBooking.type)}/${removeBooking.itemId}/custom-field/properties.customFields.bookings`, {
-      bookings: newBookingsList
-    })
+    .put(
+      `/v2/${getEndpoint(removeBooking.type)}/${
+        removeBooking.itemId
+      }/custom-field/properties.customFields.bookings`,
+      {
+        bookings: newBookingsListForItem
+      }
+    )
     .then((response: any) => {
       dispatch(endSaveBooking(newBookingsList))
     })

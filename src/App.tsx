@@ -72,7 +72,7 @@ const App = (props: PropsFromRedux) => {
 
   return (
     <div className="app">
-      <div className="header">Room Booking - {props.floorName}</div>
+      <div className="header">Desk & Room Booking - {props.floorName}</div>
       <div className="content">
         <DaySelect />
         <TimeLine />

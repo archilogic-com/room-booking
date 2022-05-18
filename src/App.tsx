@@ -6,7 +6,7 @@ import { Modal } from 'antd'
 
 import TimeLine from 'components/TimeSlider/TimeSlider'
 import DaySelect from 'components/DaySelect/DaySelect'
-import { BookingsState, initBookings, selectSpace, unSelectSpace } from 'reducers/bookings'
+import { BookingsState, initBookings, selectItem, unSelectItem } from 'reducers/bookings'
 import axios from 'axios'
 
 import BookForm from 'components/BookForm/BookForm'
@@ -61,12 +61,12 @@ const App = (props: PropsFromRedux) => {
   }, [sceneId])
 
   useEffect(() => {
-    if (!props.selectedSpace) return
+    if (!props.selectedItem) return
     setIsBookRoomModalVisible(true)
-  }, [props.selectedSpace])
+  }, [props.selectedItem])
 
   useEffect(() => {
-    if (isBookRoomModalVisible === false) props.unSelectSpace()
+    if (isBookRoomModalVisible === false) props.unSelectItem()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isBookRoomModalVisible])
 
@@ -79,7 +79,7 @@ const App = (props: PropsFromRedux) => {
         <div style={{ flex: 1 }}>{sceneId && <FloorPlan sceneId={sceneId} />}</div>
       </div>
       <Modal
-        title="Book Room"
+        title={props.selectedItem?.type === 'desk' ? "Book Desk" : "Book Room"}
         visible={isBookRoomModalVisible}
         footer={null}
         onCancel={() => setIsBookRoomModalVisible(false)}>
@@ -97,16 +97,16 @@ export interface RootState {
 
 const mapState = (state: RootState) => ({
   bookings: state.bookings,
-  selectedSpace: state.bookings.selectedSpace,
+  selectedItem: state.bookings.selectedItem,
   floorName: state.floor.name,
-  usedSpaces: state.bookings.usedSpaces
+  usedItems: state.bookings.usedItems
 })
 
 const mapDispatch = {
   initBookings,
-  selectSpace,
+  selectItem,
   fetchFloor,
-  unSelectSpace
+  unSelectItem
 }
 
 const connector = connect(mapState, mapDispatch)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Col, Button, Form, Radio, Input, Divider, Modal } from 'antd'
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment'
@@ -6,7 +6,7 @@ import TimeLine from 'components/TimeLine/TimeLine'
 import { connect, ConnectedProps } from 'react-redux'
 import { saveBooking, updateBooking, deleteBooking } from 'reducers/bookings'
 import { RootState } from 'App'
-import { Booking, FormInitialValues } from 'shared/interfaces'
+import { Booking, FormInitialValues, BookableRoomDetails } from 'shared/interfaces'
 import { v4 as uuidv4 } from 'uuid'
 
 interface BookFormProps {
@@ -14,6 +14,43 @@ interface BookFormProps {
 }
 
 type PropsFromRedux = BookFormProps & ConnectedProps<typeof connector>
+
+const RoomDetails = ({ details }: { details: BookableRoomDetails}) => {
+  const listItems = []
+
+  const labels: Record<string, string[]> = {
+    seatCount: ['seat', 'seats'],
+    tableCount: ['table', 'tables'],
+    whiteboardCount: ['whiteboard', 'whiteboards'],
+    tvCount: ['TV', 'TVs'],
+  }
+
+  for (const key in labels) {
+    const safeKey = key as keyof BookableRoomDetails
+    if (details[safeKey] === 1) {
+      listItems.push(`1 ${labels[safeKey][0]}`)
+    } 
+    // @ts-ignore
+    if (details[safeKey] > 1) {
+      listItems.push(`${details[safeKey]} ${labels[key][1]}`)
+    }
+  }
+
+  if (details.zoomCallSupported) {
+    listItems.push('Zoom call supported')
+  }
+
+  return (<>
+    <Row>
+      <h4>Room details</h4>
+    </Row>
+    <Row>
+      <ul style={{listStyleType: 'none', paddingInlineStart: '0.5rem'}}>
+        {listItems.map((str) => <li key={str}>{str}</li>)}
+      </ul>
+    </Row>
+  </>)
+}
 
 const BookForm = (props: PropsFromRedux) => {
   let existingBooking: Booking | null = null
@@ -40,16 +77,16 @@ const BookForm = (props: PropsFromRedux) => {
 
   // on save or update
   const handleSubmit = (values: any) => {
-    const spaceId = props.selectedSpace?.id
+    const itemId = props.selectedItem?.id
     const date = moment(props.selectedDate)
     const selectedTimeSlotStart = props.selectedSlot
 
     if (existingBooking) {
       const key = existingBooking.key
-      props.updateBooking({ ...values, spaceId, key, date, selectedTimeSlotStart }, props.bookings)
+      props.updateBooking({ ...values, itemId, key, date, selectedTimeSlotStart }, props.bookings)
     } else {
       const key = uuidv4()
-      props.saveBooking({ ...values, spaceId, key, date, selectedTimeSlotStart }, props.bookings)
+      props.saveBooking({ ...values, itemId, key, date, selectedTimeSlotStart }, props.bookings)
     }
     props.onFinishCallback()
   }
@@ -81,11 +118,11 @@ const BookForm = (props: PropsFromRedux) => {
     email: ''
   }
 
-  if (props.selectedSpace && props.usedSpaces.includes(props.selectedSpace)) {
-    const selectedSpaceId = props.selectedSpace.id
+  if (props.selectedItem && props.usedItems.includes(props.selectedItem)) {
+    const selectedItemId = props.selectedItem.id
     const booking = props.bookings.find(
       booking =>
-        booking.spaceId === selectedSpaceId &&
+        booking.itemId === selectedItemId &&
         booking.date.isSame(props.selectedDate, 'day') &&
         booking.selectedTimeSlotStart <= props.selectedSlot &&
         booking.selectedTimeSlotStart + booking.duration > props.selectedSlot
@@ -103,13 +140,15 @@ const BookForm = (props: PropsFromRedux) => {
       email: ''
     }
   }
-
+  
   // select by default the maximum bookable time
   const [bookingSlotsNumber, setBookingSlotsNumber] = useState<number>(
     existingBooking ? existingBooking.duration : maxBookingSize
   )
+
   return (
     <>
+      {props.selectedItem?.type === 'room' && <RoomDetails details={props.selectedItem.details} />} 
       <Row justify="space-between" align="bottom">
         <Col span={24}>
           <TimeLine bookingSlots={bookingSlotsNumber} />
@@ -174,11 +213,12 @@ const BookForm = (props: PropsFromRedux) => {
 }
 
 const mapState = (state: RootState) => ({
+  assetsById: state.bookings.assetsById,
   bookings: state.bookings.bookings,
   selectedDate: state.bookings.selectedDate,
   selectedSlot: state.bookings.selectedTimeSlot,
-  usedSpaces: state.bookings.usedSpaces,
-  selectedSpace: state.bookings.selectedSpace,
+  usedItems: state.bookings.usedItems,
+  selectedItem: state.bookings.selectedItem,
   usedSlots: state.bookings.usedSlots
 })
 

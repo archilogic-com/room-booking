@@ -9,7 +9,7 @@ const initialState: FloorState = {
   name: undefined
 }
 
-const spaces = (state = initialState, action: { type: string; floor: any }) => {
+const items = (state = initialState, action: { type: string; floor: any }) => {
   switch (action.type) {
     case GET_FLOOR:
       return {
@@ -36,4 +36,4 @@ export const fetchFloor = (floorId: string) => (dispatch: any) => {
     })
 }
 
-export default spaces
+export default items

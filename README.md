@@ -2,23 +2,30 @@
 
 This is a simple prototype of a room booking app for managing room booking in a given space.
 
-Check out a [Demo](https://archilogic-room-booking.herokuapp.com)
+It features a client-side application (built with [React.js](https://create-react-app.dev/)) and a serverless backend (powered by [Vercel](https://vercel.com/)) communicating with Archilogic's [Space API](https://developers.archilogic.com/space-api/v2/introduction.html)
 
-## Setup local server
 
-Navigate to the server folder and run:
+## Set Environment Variables
 
-    yarn install
+To run the app we'll need to set some environment variables first.  
 
-The server needs a secret token to negotiate a temporary token.
+- The backend needs a 'secret token' to negotiate a temporary token: secret token: [secret token documentation](https://developers.archilogic.com/space-api/v2/introduction.html#secret-access-token) documentation
+- The client needs a 'publishable token' for readonly access of Space API resources: [publishable token documentation](https://developers.archilogic.com/space-api/v2/introduction.html#publishable-access-token)
 
-https://developers.archilogic.com/space-api/v2/introduction.html#secret-access-token
 
-Create a new secret token and add it to the ARCHILOGIC_SECRET_KEY environment variable.
+You can generate both tokens on the API keys page:[https://developers.archilogic.com/api-keys.html](https://developers.archilogic.com/api-keys.html).
 
-then run:
+![](token.png)
 
-    node server.js
+
+- Create a new `.env` file by copying the example 
+```bash
+cp .env.example .env
+```
+
+- Set your new 'secret token' to the ARCHILOGIC_SECRET_KEY environment variable.
+- Set your new 'publishable token' as the REACT_APP_PUBLISHABLE_TOKEN environment variable
+
 
 ## Install and Run
 
@@ -28,28 +35,14 @@ In the project directory, you can run:
 
 This command will install all the dependencies needed for the project to run locally.
 
-To run the app we'll need to set some environment variables first.  
-You'll need an API key [https://developers.archilogic.com/api-keys.html](https://developers.archilogic.com/api-keys.html).
-
-![](token.png)
-
-Once you have these keys, please create a .env file (you can copy it from .env.example) and fill in the values for
-
-    cp .env.example .env
-
-Update .env variables:
-
-    REACT_APP_PUBLISHABLE_TOKEN=YOUR_TOKEN
-    REACT_APP_ARCHILOGIC_API_URL=https://api.archilogic.com
-
 To run the application, execute:
 
-    npm start
+    npm run vercel
 
 The project loads a default scene but you can change it to a different one by specifing `?sceneId=THIS_IS_ANOTHER_SCENE_ID` in the browser url.
 
 ```html
-http://localhost:3001/?sceneId=0246512e-973c-4e52-a1f2-5f0008e9ee9c
+http://localhost:3000/?sceneId=0246512e-973c-4e52-a1f2-5f0008e9ee9c
 ```
 
 ## The App
@@ -119,6 +112,7 @@ export const saveBooking = (newBooking: Booking, bookings: Booking[]) => (dispat
 
 ### Other Libraries Used In This Project
 
+[Vercel](https://vercel.com/) - Creates a serverless endpoint for our backend as well as a static site deployment to serve the app
 [Axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js.  
 [Ant Design](https://ant.design/) - A UI Design language and React UI library.  
 [Typescript](https://www.typescriptlang.org/) - Optional static type-checking along with the latest ECMAScript features.  

@@ -15,6 +15,7 @@ import { FloorState, fetchFloor } from 'reducers/floor'
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 const API_URL = window.location.origin + '/api/temp-token'
+
 const App = (props: PropsFromRedux) => {
   const [isBookRoomModalVisible, setIsBookRoomModalVisible] = useState<boolean>(false)
   const [sceneId, setSceneId] = useState<any>()
@@ -73,7 +74,10 @@ const App = (props: PropsFromRedux) => {
 
   return (
     <div className="app">
-      <div className="header">Desk & Room Booking - {props.floorName}</div>
+      <div className="header">
+        Desk & Room Booking
+        <div className="subheader">{props.floorName}&nbsp;</div>
+      </div>
       <div className="content">
         <DaySelect />
         <TimeLine />

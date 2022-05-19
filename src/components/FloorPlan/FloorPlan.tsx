@@ -30,7 +30,9 @@ const floorPlanStartupSettings = {
     },
     wallContours: false,
     elements: {
-      roomstamp: { showArea: false }
+      roomStamp: {
+        roomStampDisplay: ['usage', 'name', 'customId']
+      }
     }
   },
   units: {
@@ -76,31 +78,15 @@ const getBookableRoomDetails = (
   assetsById: AssetsById
 ): BookableRoomDetails => {
   const details: BookableRoomDetails = {
-    tableCount: 0,
-    tvCount: 0,
-    seatCount: 0,
-    whiteboardCount: 0,
-    zoomCallSupported: false
+    zoomCallSupported: false,
+    assetMap: {}
   }
 
   for (const assetId of space.assets) {
     const asset = assetsById[assetId]
-    const categories = asset.categories || []
-    const tags = asset.tags || []
-    switch (true) {
-      case categories.includes('seating'):
-        details.seatCount++
-        break
-      case categories.includes('tables'):
-        details.tableCount++
-        break
-      case tags.includes('tv'):
-        details.tvCount++
-        break
-      case tags.includes('whiteboard'):
-        details.whiteboardCount++
-        break
-    }
+    const productId = asset.productId
+    if (!details.assetMap[productId]) details.assetMap[productId] = []
+    details.assetMap[productId].push(asset)
   }
 
   return details

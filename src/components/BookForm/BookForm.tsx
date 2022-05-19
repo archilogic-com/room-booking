@@ -6,7 +6,7 @@ import TimeLine from 'components/TimeLine/TimeLine'
 import { connect, ConnectedProps } from 'react-redux'
 import { saveBooking, updateBooking, deleteBooking } from 'reducers/bookings'
 import { RootState } from 'App'
-import { Booking, FormInitialValues, BookableRoomDetails } from 'shared/interfaces'
+import { Booking, FormInitialValues, BookableRoom, AssetsById } from 'shared/interfaces'
 import { v4 as uuidv4 } from 'uuid'
 
 interface BookFormProps {
@@ -15,41 +15,28 @@ interface BookFormProps {
 
 type PropsFromRedux = BookFormProps & ConnectedProps<typeof connector>
 
-const RoomDetails = ({ details }: { details: BookableRoomDetails }) => {
-  const listItems = []
-
-  const labels: Record<string, string[]> = {
-    seatCount: ['seat', 'seats'],
-    tableCount: ['table', 'tables'],
-    whiteboardCount: ['whiteboard', 'whiteboards'],
-    tvCount: ['TV', 'TVs']
-  }
-
-  for (const key in labels) {
-    const safeKey = key as keyof BookableRoomDetails
-    if (details[safeKey] === 1) {
-      listItems.push(`1 ${labels[safeKey][0]}`)
-    }
-    // @ts-ignore
-    if (details[safeKey] > 1) {
-      listItems.push(`${details[safeKey]} ${labels[key][1]}`)
-    }
-  }
-
-  if (details.zoomCallSupported) {
-    listItems.push('Zoom call supported')
-  }
+const RoomDetails = ({ room, assetsById }: { room: BookableRoom; assetsById: AssetsById }) => {
+  const displayAssets = Object.entries(room.details.assetMap)
 
   return (
     <>
-      <Row>
-        <h4>Room details</h4>
+      <Row style={{ display: 'flex', flexDirection: 'column' }}>
+        <h4 style={{ marginBottom: '0' }}>Room details</h4>
+        {room.usageName && <div>{room.usageName}</div>}
+        {room.customId && <div>{room.customId}</div>}
       </Row>
       <Row>
-        <ul style={{ listStyleType: 'none', paddingInlineStart: '0.5rem' }}>
-          {listItems.map(str => (
-            <li key={str}>{str}</li>
-          ))}
+        <ul
+          style={{
+            paddingInlineStart: '1rem'
+          }}
+        >
+          {displayAssets &&
+            displayAssets.map(([key, assets]) => (
+              <li key={key}>
+                {(assets as any).length}x {(assets as any)[0].name}
+              </li>
+            ))}
         </ul>
       </Row>
     </>
@@ -153,7 +140,9 @@ const BookForm = (props: PropsFromRedux) => {
 
   return (
     <>
-      {props.selectedItem?.type === 'room' && <RoomDetails details={props.selectedItem.details} />}
+      {props.selectedItem?.type === 'room' && (
+        <RoomDetails room={props.selectedItem} assetsById={props.assetsById} />
+      )}
       <Row justify="space-between" align="bottom">
         <Col span={24}>
           <TimeLine bookingSlots={bookingSlotsNumber} />

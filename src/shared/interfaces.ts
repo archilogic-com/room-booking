@@ -25,6 +25,7 @@ export interface Asset {
   subCategories?: string[]
   categories?: string[]
   tags?: string[]
+  productId: string
 }
 
 export type AssetsById = Record<string, Asset>
@@ -33,16 +34,15 @@ export interface BookableRoom {
   id: string
   node: any
   usage: string
+  usageName?: string
   program?: string
   assets: string[]
   details: BookableRoomDetails
+  customId?: string
 }
 export interface BookableRoomDetails {
   zoomCallSupported?: boolean
-  seatCount: number
-  tableCount: number
-  tvCount: number
-  whiteboardCount: number
+  assetMap?: any
 }
 
 export interface BookableDesk extends Asset {

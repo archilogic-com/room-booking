@@ -14,6 +14,7 @@ import { FloorState, fetchFloor } from 'reducers/floor'
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
+const API_URL = window.location.origin + '/api/temp-token'
 const App = (props: PropsFromRedux) => {
   const [isBookRoomModalVisible, setIsBookRoomModalVisible] = useState<boolean>(false)
   const [sceneId, setSceneId] = useState<any>()
@@ -22,7 +23,7 @@ const App = (props: PropsFromRedux) => {
   useLayoutEffect(() => {
     // get temporary token
     let tempToken: null | string = null
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/temp-token`).then(response => {
+    axios.get(API_URL).then(response => {
       tempToken = response?.data?.authorization
       if (!tempToken) return
 
@@ -50,7 +51,7 @@ const App = (props: PropsFromRedux) => {
     if (!token) return
     const urlParams = new URLSearchParams(window.location.search)
     const scene = urlParams.get('sceneId')
-    const demoSceneId = scene || 'b6aa6096-bb77-4872-be25-4886a9e5bf06'
+    const demoSceneId = scene || '218e2e57-1689-49cb-b560-21606377340d'
     setSceneId(demoSceneId)
   }, [token])
 

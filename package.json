@@ -12,7 +12,7 @@
     "@types/react-dom": "^16.9.0",
     "antd": "^4.6.3",
     "axios": "^0.21.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-media": "^1.10.0",

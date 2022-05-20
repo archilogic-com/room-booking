@@ -76,7 +76,7 @@ const App = (props: PropsFromRedux) => {
     <div className="app">
       <div className="header">
         Desk & Room Booking
-        <div className="subheader">{props.floorName}&nbsp;</div>
+        <div className="subheader">{props.floorName || 'loading...'}</div>
       </div>
       <div className="content">
         <DaySelect />

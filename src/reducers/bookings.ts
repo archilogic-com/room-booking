@@ -227,7 +227,7 @@ const aggregateUsedSlots = (
   })
 }
 
-// calculate used items at a especific moment
+// calculate used items at a specific moment
 const aggregateUsedItems = (
   bookings: Booking[],
   dateSelected: Moment,

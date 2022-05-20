@@ -9,7 +9,7 @@ It features a client-side application (built with [React.js](https://create-reac
 
 To run the app we'll need to set some environment variables first.  
 
-- The backend needs a 'secret token' to negotiate a temporary token: secret token: [secret token documentation](https://developers.archilogic.com/space-api/v2/introduction.html#secret-access-token) documentation
+- The backend needs a 'secret token' to negotiate a temporary token: [secret token documentation](https://developers.archilogic.com/space-api/v2/introduction.html#secret-access-token)
 - The client needs a 'publishable token' for readonly access of Space API resources: [publishable token documentation](https://developers.archilogic.com/space-api/v2/introduction.html#publishable-access-token)
 
 

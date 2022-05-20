@@ -13,8 +13,12 @@ body,
   background-color: rgb(40, 44, 52);
   color: #fff;
   text-align: center;
-  font-size: 1.5rem;
-  padding: 1rem;
+  font-size: 1.25rem;
+  padding: 0.75rem;
+}
+
+.subheader {
+  font-size: 0.875rem;
 }
 
 .content {

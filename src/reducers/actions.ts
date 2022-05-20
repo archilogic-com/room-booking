@@ -6,11 +6,13 @@ export const INIT_BOOKINGS = 'INIT_BOOKINGS'
 
 export const SET_BOOKINGS = 'SET_BOOKINGS'
 
-export const SET_SPACES = 'SET_SPACES'
+export const SET_ASSETS_BY_ID = 'SET_ASSETS_BY_ID'
 
-export const SELECT_SPACE = 'SELECT_SPACE'
+export const SET_ITEMS = 'SET_ITEMS'
 
-export const UNSELECT_SPACE = 'UNSELECT_SPACE'
+export const SELECT_ITEM = 'SELECT_ITEM'
+
+export const UNSELECT_ITEM = 'UNSELECT_ITEM'
 
 export const GET_FLOOR = 'GET_FLOOR'
 

@@ -6,7 +6,7 @@ import TimeLine from 'components/TimeLine/TimeLine'
 import { connect, ConnectedProps } from 'react-redux'
 import { saveBooking, updateBooking, deleteBooking } from 'reducers/bookings'
 import { RootState } from 'App'
-import { Booking, FormInitialValues } from 'shared/interfaces'
+import { Booking, FormInitialValues, BookableRoom, AssetsById } from 'shared/interfaces'
 import { v4 as uuidv4 } from 'uuid'
 
 interface BookFormProps {
@@ -14,6 +14,34 @@ interface BookFormProps {
 }
 
 type PropsFromRedux = BookFormProps & ConnectedProps<typeof connector>
+
+const RoomDetails = ({ room, assetsById }: { room: BookableRoom; assetsById: AssetsById }) => {
+  const displayAssets = Object.entries(room.details.assetMap)
+
+  return (
+    <>
+      <Row style={{ display: 'flex', flexDirection: 'column' }}>
+        <h4 style={{ marginBottom: '0' }}>Room details</h4>
+        {room.usageName && <div>{room.usageName}</div>}
+        {room.customId && <div>{room.customId}</div>}
+      </Row>
+      <Row>
+        <ul
+          style={{
+            paddingInlineStart: '1rem'
+          }}
+        >
+          {displayAssets &&
+            displayAssets.map(([key, assets]) => (
+              <li key={key}>
+                {(assets as any).length}x {(assets as any)[0].name}
+              </li>
+            ))}
+        </ul>
+      </Row>
+    </>
+  )
+}
 
 const BookForm = (props: PropsFromRedux) => {
   let existingBooking: Booking | null = null
@@ -32,7 +60,8 @@ const BookForm = (props: PropsFromRedux) => {
       <Radio.Button
         key={bookingOpts}
         onClick={() => setBookingSlotsNumber(bookingOpts)}
-        value={bookingOpts}>
+        value={bookingOpts}
+      >
         {bookingOpts * 30} Minutes
       </Radio.Button>
     )
@@ -40,16 +69,16 @@ const BookForm = (props: PropsFromRedux) => {
 
   // on save or update
   const handleSubmit = (values: any) => {
-    const spaceId = props.selectedSpace?.id
+    const itemId = props.selectedItem?.id
     const date = moment(props.selectedDate)
     const selectedTimeSlotStart = props.selectedSlot
 
     if (existingBooking) {
       const key = existingBooking.key
-      props.updateBooking({ ...values, spaceId, key, date, selectedTimeSlotStart }, props.bookings)
+      props.updateBooking({ ...values, itemId, key, date, selectedTimeSlotStart }, props.bookings)
     } else {
       const key = uuidv4()
-      props.saveBooking({ ...values, spaceId, key, date, selectedTimeSlotStart }, props.bookings)
+      props.saveBooking({ ...values, itemId, key, date, selectedTimeSlotStart }, props.bookings)
     }
     props.onFinishCallback()
   }
@@ -81,11 +110,11 @@ const BookForm = (props: PropsFromRedux) => {
     email: ''
   }
 
-  if (props.selectedSpace && props.usedSpaces.includes(props.selectedSpace)) {
-    const selectedSpaceId = props.selectedSpace.id
+  if (props.selectedItem && props.usedItems.includes(props.selectedItem)) {
+    const selectedItemId = props.selectedItem.id
     const booking = props.bookings.find(
       booking =>
-        booking.spaceId === selectedSpaceId &&
+        booking.itemId === selectedItemId &&
         booking.date.isSame(props.selectedDate, 'day') &&
         booking.selectedTimeSlotStart <= props.selectedSlot &&
         booking.selectedTimeSlotStart + booking.duration > props.selectedSlot
@@ -108,8 +137,12 @@ const BookForm = (props: PropsFromRedux) => {
   const [bookingSlotsNumber, setBookingSlotsNumber] = useState<number>(
     existingBooking ? existingBooking.duration : maxBookingSize
   )
+
   return (
     <>
+      {props.selectedItem?.type === 'room' && (
+        <RoomDetails room={props.selectedItem} assetsById={props.assetsById} />
+      )}
       <Row justify="space-between" align="bottom">
         <Col span={24}>
           <TimeLine bookingSlots={bookingSlotsNumber} />
@@ -127,23 +160,27 @@ const BookForm = (props: PropsFromRedux) => {
             wrapperCol={{ span: 14 }}
             layout="horizontal"
             initialValues={formValues as any}
-            onFinish={handleSubmit}>
+            onFinish={handleSubmit}
+          >
             <Form.Item
               label="First Name"
               name="firstName"
-              rules={[{ required: true, message: 'Please input the First Name' }]}>
+              rules={[{ required: true, message: 'Please input the First Name' }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
               label="Last Name"
               name="lastName"
-              rules={[{ required: true, message: 'Please input the Last Name' }]}>
+              rules={[{ required: true, message: 'Please input the Last Name' }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
               label="Email"
               name="email"
-              rules={[{ required: true, message: 'Please input Email Address' }]}>
+              rules={[{ required: true, message: 'Please input Email Address' }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item label="Booking Time" name="duration">
@@ -174,11 +211,12 @@ const BookForm = (props: PropsFromRedux) => {
 }
 
 const mapState = (state: RootState) => ({
+  assetsById: state.bookings.assetsById,
   bookings: state.bookings.bookings,
   selectedDate: state.bookings.selectedDate,
   selectedSlot: state.bookings.selectedTimeSlot,
-  usedSpaces: state.bookings.usedSpaces,
-  selectedSpace: state.bookings.selectedSpace,
+  usedItems: state.bookings.usedItems,
+  selectedItem: state.bookings.selectedItem,
   usedSlots: state.bookings.usedSlots
 })
 

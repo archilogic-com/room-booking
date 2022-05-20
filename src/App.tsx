@@ -6,13 +6,15 @@ import { Modal } from 'antd'
 
 import TimeLine from 'components/TimeSlider/TimeSlider'
 import DaySelect from 'components/DaySelect/DaySelect'
-import { BookingsState, initBookings, selectSpace, unSelectSpace } from 'reducers/bookings'
+import { BookingsState, initBookings, selectItem, unSelectItem } from 'reducers/bookings'
 import axios from 'axios'
 
 import BookForm from 'components/BookForm/BookForm'
 import { FloorState, fetchFloor } from 'reducers/floor'
 
 type PropsFromRedux = ConnectedProps<typeof connector>
+
+const API_URL = window.location.origin + '/api/temp-token'
 
 const App = (props: PropsFromRedux) => {
   const [isBookRoomModalVisible, setIsBookRoomModalVisible] = useState<boolean>(false)
@@ -22,7 +24,7 @@ const App = (props: PropsFromRedux) => {
   useLayoutEffect(() => {
     // get temporary token
     let tempToken: null | string = null
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/temp-token`).then(response => {
+    axios.get(API_URL).then(response => {
       tempToken = response?.data?.authorization
       if (!tempToken) return
 
@@ -50,7 +52,7 @@ const App = (props: PropsFromRedux) => {
     if (!token) return
     const urlParams = new URLSearchParams(window.location.search)
     const scene = urlParams.get('sceneId')
-    const demoSceneId = scene || 'b6aa6096-bb77-4872-be25-4886a9e5bf06'
+    const demoSceneId = scene || '218e2e57-1689-49cb-b560-21606377340d'
     setSceneId(demoSceneId)
   }, [token])
 
@@ -61,28 +63,32 @@ const App = (props: PropsFromRedux) => {
   }, [sceneId])
 
   useEffect(() => {
-    if (!props.selectedSpace) return
+    if (!props.selectedItem) return
     setIsBookRoomModalVisible(true)
-  }, [props.selectedSpace])
+  }, [props.selectedItem])
 
   useEffect(() => {
-    if (isBookRoomModalVisible === false) props.unSelectSpace()
+    if (isBookRoomModalVisible === false) props.unSelectItem()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isBookRoomModalVisible])
 
   return (
     <div className="app">
-      <div className="header">Room Booking - {props.floorName}</div>
+      <div className="header">
+        Desk & Room Booking
+        <div className="subheader">{props.floorName || 'loading...'}</div>
+      </div>
       <div className="content">
         <DaySelect />
         <TimeLine />
         <div style={{ flex: 1 }}>{sceneId && <FloorPlan sceneId={sceneId} />}</div>
       </div>
       <Modal
-        title="Book Room"
+        title={props.selectedItem?.type === 'desk' ? 'Book Desk' : 'Book Room'}
         visible={isBookRoomModalVisible}
         footer={null}
-        onCancel={() => setIsBookRoomModalVisible(false)}>
+        onCancel={() => setIsBookRoomModalVisible(false)}
+      >
         {isBookRoomModalVisible && (
           <BookForm onFinishCallback={() => setIsBookRoomModalVisible(false)} />
         )}
@@ -97,16 +103,16 @@ export interface RootState {
 
 const mapState = (state: RootState) => ({
   bookings: state.bookings,
-  selectedSpace: state.bookings.selectedSpace,
+  selectedItem: state.bookings.selectedItem,
   floorName: state.floor.name,
-  usedSpaces: state.bookings.usedSpaces
+  usedItems: state.bookings.usedItems
 })
 
 const mapDispatch = {
   initBookings,
-  selectSpace,
+  selectItem,
   fetchFloor,
-  unSelectSpace
+  unSelectItem
 }
 
 const connector = connect(mapState, mapDispatch)
